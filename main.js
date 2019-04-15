@@ -1,7 +1,7 @@
-
+"strict"
 let elForm = document.getElementById('Student-form');
 let elButton = document.getElementById('submit')
-
+let elButton2 = document.getElementsByTagName('button2')
 let StudentDB = function(name,school, language) {
     this.name = name
     this.school = school
@@ -33,8 +33,29 @@ let Janae = new StudentDB ( 'Janae', 'CodePartner', 'JS AND HTML', 'Janae');
 
 let devStudents = [];
 devStudents.push(JD, Paul, Anna, Adrian, Joseph, Janae); 
-
+let newStudentArray = [];
 localStorage.setItem('studentDatabase', JSON.stringify(devStudents));
+sessionStorage.setItem('newStudentDatabase', JSON.stringify(newStudentArray))
+localStorage.setItem('newStudentDatabase', JSON.stringify(newStudentArray))
+
+
+
+ function refreshData(){
+    if(sessionStorage > 0){
+    restore();
+    }
+}
+
+function startOver(){
+    sessionStorage.setItem('newStudentDatabase', JSON.stringify(newStudentArray));
+    
+    location.reload()
+    refreshData();
+    //refreshData();
+    //showStudentDetails();
+}
+
+
 
 
 function displayStudentDetails(array){
@@ -48,6 +69,8 @@ let school = elForm.school
 let language = elForm.language
 
 console.log(devStudents);
+
+
 function createNewStudent(event){
     event.preventDefault();
     newStudent = new StudentDB (name.value, language.value, school.value)
@@ -55,6 +78,11 @@ function createNewStudent(event){
     devStudents.push(newStudent);
     newStudent.showStudentDetails(newStudent);
     localStorage.setItem('studentDatabase', JSON.stringify(devStudents))
+    newStudentArray.push(newStudent);
+    sessionStorage.setItem('newStudentDatabase', JSON.stringify(newStudentArray))
 }
+
+
 displayStudentDetails(devStudents)
 elForm.addEventListener('submit', createNewStudent);
+elForm.addEventListener('reset', startOver)
